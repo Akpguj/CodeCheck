@@ -1,4 +1,4 @@
-name: "CodeSentinel PR Reviewer"
+name: "CodeCheck PR Reviewer"
 description: "LLM-powered PR reviewer for naming, style, and security checks. Supports Gemini, OpenAI, Groq, Anthropic, and HuggingFace."
 author: "Akpguj"
 

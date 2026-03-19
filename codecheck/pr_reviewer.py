@@ -14,8 +14,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langgraph.graph import END, StateGraph
 from pydantic import BaseModel, Field
 
-from codesentinel.config import SentinelConfig, load_config
-from codesentinel.router import get_embedding_adapter, get_llm_adapter, get_vectordb_adapter
+from codecheck.config import SentinelConfig, load_config
+from codecheck.router import get_embedding_adapter, get_llm_adapter, get_vectordb_adapter
 
 
 class Issue(BaseModel):
@@ -69,7 +69,7 @@ def build_llm_runtime(config: SentinelConfig):
 		input_variables=["filename", "code_diff", "style_rules"],
 		partial_variables={"format_instructions": parser.get_format_instructions()},
 		template="""
-You are CodeSentinel, a senior code reviewer AI. Review added lines in a PR diff against style rules.
+You are CodeCheck, a senior code reviewer AI. Review added lines in a PR diff against style rules.
 
 File: {filename}
 
@@ -189,7 +189,7 @@ def format_comment(state: ReviewState) -> dict:
 	passed = review.get("passed", True)
 	summary = review.get("summary", "")
 
-	lines = [f"## CodeSentinel | `{filename}`", f"> {summary}", "---"]
+	lines = [f"## CodeCheck | `{filename}`", f"> {summary}", "---"]
 	if passed or not issues:
 		lines.append("### No issues found. Great job!")
 	else:
@@ -335,7 +335,7 @@ def main() -> None:
 			"comments_posted": 0,
 		}
 	)
-	logging.info("CodeSentinel done. Posted %s review comment(s).", final_state.get("comments_posted", 0))
+	logging.info("CodeCheck done. Posted %s review comment(s).", final_state.get("comments_posted", 0))
 
 
 if __name__ == "__main__":

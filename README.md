@@ -1,10 +1,10 @@
-# CodeSentinel
+# CodeCheck
 
 > LLM-powered PR reviewer that checks code against your style guide and posts structured comments — automatically, on every pull request.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  PR opened  →  CodeSentinel reads diff  →  reviews against  │
+│  PR opened  →  CodeCheck reads diff  →  reviews against  │
 │  your style guide  →  posts comment with violations + fixes │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -13,7 +13,7 @@
 
 ## What it does
 
-When a pull request is opened or updated, CodeSentinel:
+When a pull request is opened or updated, CodeCheck:
 
 1. Fetches the changed files from the PR
 2. Loads your `.github/style_guide.md` and indexes it into a local vector DB
@@ -27,10 +27,10 @@ When a pull request is opened or updated, CodeSentinel:
 
 ### Step 1 — Add the workflow file
 
-Create `.github/workflows/codesentinel.yml` in your repo:
+Create `.github/workflows/codecheck.yml` in your repo:
 
 ```yaml
-name: CodeSentinel PR Review
+name: CodeCheck PR Review
 
 on:
   pull_request:
@@ -42,8 +42,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run CodeSentinel
-        uses: Akpguj/CodeSentinel@v1.0.0
+      - name: Run CodeCheck
+        uses: Akpguj/CodeCheck@v2.0.0
         with:
           google_api_key: ${{ secrets.GOOGLE_API_KEY }}
           # openai_api_key: ${{ secrets.OPENAI_API_KEY }}
@@ -68,7 +68,7 @@ Add the secret for your chosen provider (e.g. `GOOGLE_API_KEY`).
 
 ### Step 3 — Create your style guide
 
-Create `.github/style_guide.md` in your repo. This is the document CodeSentinel reviews all code against. Example:
+Create `.github/style_guide.md` in your repo. This is the document CodeCheck reviews all code against. Example:
 
 ```markdown
 ## Naming Conventions
@@ -88,9 +88,9 @@ Create `.github/style_guide.md` in your repo. This is the document CodeSentinel 
 - No commented-out code in final PRs
 ```
 
-The richer this file, the better the reviews. CodeSentinel uses semantic search to find the most relevant rules for each file it reviews.
+The richer this file, the better the reviews. CodeCheck uses semantic search to find the most relevant rules for each file it reviews.
 
-That's it. Open a PR and CodeSentinel will post a review comment automatically.
+That's it. Open a PR and CodeCheck will post a review comment automatically.
 
 ---
 
@@ -181,7 +181,7 @@ reviewable_extensions:
 Below is a complete workflow showing all available options with comments:
 
 ```yaml
-name: CodeSentinel PR Review
+name: CodeCheck PR Review
 
 on:
   pull_request:
@@ -200,8 +200,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run CodeSentinel
-        uses: Akpguj/CodeSentinel@v1.0.0
+      - name: Run CodeCheck
+        uses: Akpguj/CodeCheck@v2.0.0
         with:
           # Uncomment only the key(s) your chosen provider needs.
           # If both your LLM and embedding use the same provider,
@@ -226,10 +226,10 @@ jobs:
 
 ## How the review comment looks
 
-CodeSentinel posts one comment per reviewed file. Each comment follows this structure:
+CodeCheck posts one comment per reviewed file. Each comment follows this structure:
 
 ```
-## CodeSentinel | `src/auth/token.py`
+## CodeCheck | `src/auth/token.py`
 > Overall: 2 violations found in this file.
 ---
 
@@ -316,7 +316,7 @@ export PR_NUMBER="1"
 export GITHUB_WORKSPACE="."
 
 # Run
-python -m codesentinel.pr_reviewer
+python -m codecheck.pr_reviewer
 ```
 
 To generate a GitHub Personal Access Token: GitHub → Settings → Developer Settings → Personal Access Tokens → Fine-grained. Grant `pull-requests: read/write` and `contents: read` on your test repo.
@@ -326,14 +326,14 @@ To generate a GitHub Personal Access Token: GitHub → Settings → Developer Se
 ## Repository layout
 
 ```
-CodeSentinel/
+CodeCheck/
 ├── action.yml                  # GitHub Action definition
 ├── Dockerfile                  # container built by GitHub on every run
 ├── requirements.txt
-├── sentinel.yml                # default config (used for CodeSentinel's own repo)
+├── sentinel.yml                # default config (used for CodeCheck's own repo)
 ├── .github/
 │   └── style_guide.md          # default style guide
-├── codesentinel/
+├── codecheck/
 │   ├── pr_reviewer.py          # main entrypoint and LangGraph workflow
 │   ├── config.py               # sentinel.yml loader and defaults
 │   ├── router.py               # provider routing (LLM / embedding / vector DB)

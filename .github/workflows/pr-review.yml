@@ -1,4 +1,4 @@
-name: CodeSentinel PR Review
+name: CodeCheck PR Review
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run CodeSentinel
-        uses: Akpguj/CodeSentinel@main
+      - name: Run CodeCheck
+        uses: Akpguj/CodeCheck@main
         with:
           google_api_key: ${{ secrets.GOOGLE_API_KEY }}
           # openai_api_key: ${{ secrets.OPENAI_API_KEY }}

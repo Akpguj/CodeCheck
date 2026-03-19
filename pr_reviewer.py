@@ -1,4 +1,4 @@
-from codesentinel.pr_reviewer import main
+from codecheck.pr_reviewer import main
 
 
 if __name__ == "__main__":

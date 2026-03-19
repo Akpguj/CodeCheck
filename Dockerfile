@@ -11,4 +11,4 @@ COPY . /app
 
 ENV PYTHONPATH="/app"
 
-ENTRYPOINT ["python", "-m", "codesentinel.pr_reviewer"]
+ENTRYPOINT ["python", "-m", "codecheck.pr_reviewer"]
