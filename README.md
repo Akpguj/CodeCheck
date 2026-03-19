@@ -355,3 +355,8 @@ CodeCheck/
 | Vector DB | ChromaDB (in-memory) | FAISS |
 | Orchestration | LangGraph | — |
 | GitHub integration | PyGitHub | — |
+
+## Privacy
+CodeCheck does not store, log, or retain any code or PR content.
+All data flows directly from GitHub to your chosen LLM API and is
+not persisted anywhere by this action.
