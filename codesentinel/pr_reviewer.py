@@ -96,11 +96,15 @@ def fetch_pr_files(state: ReviewState, config: SentinelConfig) -> dict:
 	repo = gh.get_repo(state["repo_name"])
 	pr = repo.get_pull(state["pr_number"])
 
+	all_files = list(pr.get_files())
+	logging.info("PR has %d total file(s): %s", len(all_files), [f.filename for f in all_files])
+
 	files = [
 		{"filename": f.filename, "patch": f.patch, "status": f.status}
-		for f in pr.get_files()
+		for f in all_files
 		if f.filename.endswith(config.reviewable_extensions) and f.patch
 	]
+	logging.info("Reviewable file(s) after filter: %d \u2192 %s", len(files), [f["filename"] for f in files])
 
 	max_files = max(1, config.max_files_per_pr)
 	files = files[:max_files]
@@ -300,7 +304,11 @@ def main() -> None:
 		if not os.environ.get(target) and os.environ.get(source):
 			os.environ[target] = os.environ[source]
 
-	config = load_config()
+	# GITHUB_WORKSPACE is the checked-out user repo — always use it when available
+	repo_root = os.environ.get("GITHUB_WORKSPACE", str(Path.cwd()))
+	logging.info("Loading config from: %s", repo_root)
+	config = load_config(repo_root=repo_root)
+	logging.info("LLM: %s/%s | Extensions: %s", config.llm.provider, config.llm.model, config.reviewable_extensions)
 
 	github_token = os.environ.get("GITHUB_TOKEN")
 	repo_name = os.environ.get("GITHUB_REPOSITORY")
