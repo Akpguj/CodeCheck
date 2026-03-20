@@ -4,7 +4,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  PR opened  →  CodeCheck reads diff  →  reviews against  │
+│  PR opened  →  CodeCheck reads diff  →  reviews against     │
 │  your style guide  →  posts comment with violations + fixes │
 └─────────────────────────────────────────────────────────────┘
 ```
